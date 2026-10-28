@@ -50,7 +50,7 @@ create table public.admin_allowlist (
 );
 
 insert into public.admin_allowlist (email) values
-  ('guptapropertynct@gmail.com'),
+  ('unitedestates.ncr@gmail.com'),
   ('aayusharyan1210@gmail.com');
 
 create table public.admins (
