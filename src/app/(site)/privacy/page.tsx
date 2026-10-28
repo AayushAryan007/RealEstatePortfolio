@@ -32,7 +32,7 @@ export default function PrivacyPage() {
         <h2>Your choices</h2>
         <p>
           To have your details deleted, email us at <a className="text-gold" href={`mailto:${site.contact.email}`}>{site.contact.email}</a> or call{" "}
-          {site.contact.phone}.
+          {site.contact.phone} / {site.contact.phone2}.
         </p>
       </section>
     </>

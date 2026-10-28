@@ -20,6 +20,10 @@ const nextConfig: NextConfig = {
     unoptimized: true,
     remotePatterns: [{ protocol: "https", hostname: "*.supabase.co", pathname: "/storage/v1/object/public/**" }],
   },
+  // Share-image generators read fonts and sample photos from disk at runtime.
+  outputFileTracingIncludes: {
+    "/**/opengraph-image*": ["./src/assets/fonts/**/*", "./public/media/samples/**/*"],
+  },
   experimental: {
     optimizePackageImports: ["lucide-react"],
   },

@@ -11,6 +11,7 @@ import { Testimonials } from "@/components/home/testimonials"
 import { getLocalities, getTestimonials } from "@/lib/data/content"
 import { getCategoryCounts, getFeaturedProperties } from "@/lib/data/properties"
 import { getSiteSettings } from "@/lib/data/settings"
+import { JsonLd, organizationLd } from "@/lib/seo/json-ld"
 
 // Below-the-fold interactive sections ship as separate chunks.
 const Showcase = dynamic(() => import("@/components/home/showcase").then((m) => m.Showcase))
@@ -31,6 +32,7 @@ export default async function HomePage() {
 
   return (
     <>
+      <JsonLd data={organizationLd(settings.contact)} />
       <Hero hero={settings.hero} localities={localities} />
       <PropertyTypes counts={counts} />
       <FeaturedProperties properties={featured} />
@@ -40,7 +42,7 @@ export default async function HomePage() {
       <Stats stats={settings.stats} />
       <Areas localities={localities} />
       <Testimonials testimonials={testimonials} />
-      <LampCta phone={settings.contact.phone} phoneHref={`tel:${settings.contact.phone.replace(/[^\d+]/g, "")}`} />
+      <LampCta />
     </>
   )
 }

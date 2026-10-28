@@ -3,10 +3,11 @@ import Link from "next/link"
 import { BedDoubleIcon, MapPinIcon, MaximizeIcon } from "lucide-react"
 
 import { WhatsAppIcon } from "@/components/shared/brand-icons"
+import { ContactMenu } from "@/components/shared/contact-menu"
 import type { PropertyCardData } from "@/lib/data/properties"
 import { formatArea, formatPrice, propertyTypeLabel, purposeLabel } from "@/lib/format"
 import { mediaUrl } from "@/lib/media"
-import { site, whatsappLink } from "@/lib/site"
+import { site } from "@/lib/site"
 import { cn } from "@/lib/utils"
 import { DirectionHover } from "./direction-hover"
 import { FavoriteButton } from "./favorite-button"
@@ -105,15 +106,15 @@ export function PropertyCard({ property, priority = false }: { property: Propert
 
         <div className="mt-auto flex items-end justify-between gap-4 border-t border-gold/10 pt-5">
           <p className="font-heading text-2xl font-semibold text-gold">{price}</p>
-          <a
-            href={whatsappLink(message)}
-            target="_blank"
-            rel="noopener noreferrer"
+          <ContactMenu mode="whatsapp" message={message} align="end" side="top">
+          <button
+            type="button"
             aria-label={`Ask about ${property.title} on WhatsApp`}
             className="grid size-10 place-items-center rounded-full border border-gold/30 text-gold transition-colors duration-300 hover:bg-gold hover:text-ink"
           >
             <WhatsAppIcon className="size-[18px]" />
-          </a>
+          </button>
+          </ContactMenu>
         </div>
       </div>
     </article>

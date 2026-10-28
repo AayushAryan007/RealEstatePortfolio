@@ -12,7 +12,8 @@ export type AboutSettings = { years: number; title: string; body: string }
 export type Stat = { label: string; value: number; suffix: string }
 export type ContactSettings = {
   phone: string
-  whatsapp: string
+  /** Optional second number; visitors can choose either for calls and WhatsApp. */
+  phone2: string
   email: string
   address: string
   hours: string
@@ -36,19 +37,19 @@ const defaults: SiteSettings = {
       "Handpicked apartments, plots, commercial spaces and rentals across Noida, Vasundhara, Indirapuram and Ghaziabad.",
   },
   about: {
-    years: 15,
+    years: 20, // since 2006
     title: "A family name the NCR has trusted for years",
     body: "Gupta Properties began with a simple promise: treat every client like family.",
   },
   stats: [
-    { label: "Years of experience", value: 15, suffix: "+" },
+    { label: "Years of experience", value: 20, suffix: "+" },
     { label: "Properties sold", value: 500, suffix: "+" },
     { label: "Happy families", value: 1200, suffix: "+" },
     { label: "Localities covered", value: 4, suffix: "" },
   ],
   contact: {
     phone: site.contact.phone,
-    whatsapp: site.contact.whatsapp,
+    phone2: site.contact.phone2,
     email: site.contact.email,
     address: site.contact.address,
     hours: site.contact.hours,

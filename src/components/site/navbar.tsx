@@ -6,9 +6,10 @@ import { usePathname } from "next/navigation"
 import { m, useMotionValueEvent, useScroll } from "motion/react"
 import { MenuIcon, PhoneIcon } from "lucide-react"
 
+import { ContactMenu } from "@/components/shared/contact-menu"
 import { Logo } from "@/components/shared/logo"
 import { Button } from "@/components/ui/button"
-import { mainNav, site } from "@/lib/site"
+import { mainNav } from "@/lib/site"
 import { cn } from "@/lib/utils"
 import { MobileMenu } from "./mobile-menu"
 
@@ -74,12 +75,12 @@ export function Navbar() {
         </nav>
 
         <div className="flex items-center gap-2">
-          <Button asChild className="hidden sm:inline-flex">
-            <a href={site.contact.phoneHref}>
+          <ContactMenu mode="call" align="end">
+            <Button className="hidden sm:inline-flex">
               <PhoneIcon aria-hidden="true" />
               Call Now
-            </a>
-          </Button>
+            </Button>
+          </ContactMenu>
           <Button
             variant="ghost"
             size="icon-lg"

@@ -30,7 +30,7 @@ export function Areas({ localities }: { localities: LocalityRow[] }) {
                 >
                   {image && (
                     <Image
-                      src={image.replace(/\.webp$/, "-800.webp")}
+                      src={image}
                       alt=""
                       fill
                       sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"

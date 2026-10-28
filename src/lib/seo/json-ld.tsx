@@ -29,7 +29,7 @@ export function breadcrumbLd(items: { name: string; path: string }[]) {
 }
 
 /** The business itself: helps local search (Google Maps / "near me"). */
-export function organizationLd(contact: { phone: string; email: string; address: string }) {
+export function organizationLd(contact: { phone: string; phone2?: string; email: string; address: string }) {
   return {
     "@context": "https://schema.org",
     "@type": "RealEstateAgent",
@@ -41,11 +41,17 @@ export function organizationLd(contact: { phone: string; email: string; address:
     logo: absoluteUrl("/icon.svg"),
     image: absoluteUrl("/media/samples/sunken-living.webp"),
     telephone: contact.phone,
+    contactPoint: [contact.phone, contact.phone2]
+      .filter(Boolean)
+      .map((telephone) => ({ "@type": "ContactPoint", telephone, contactType: "sales", areaServed: "IN", availableLanguage: ["en", "hi"] })),
+    foundingDate: String(site.since),
+    founder: { "@type": "Person", name: site.owner },
     email: contact.email,
     address: {
       "@type": "PostalAddress",
       streetAddress: contact.address,
-      addressLocality: "Ghaziabad",
+      addressLocality: "Vasundhara, Ghaziabad",
+      postalCode: "201012",
       addressRegion: "Uttar Pradesh",
       addressCountry: "IN",
     },

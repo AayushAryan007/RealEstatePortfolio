@@ -7,7 +7,9 @@ import { MailIcon, PhoneIcon, XIcon } from "lucide-react"
 
 import { LogoMark } from "@/components/shared/logo"
 import { WhatsAppIcon } from "@/components/shared/brand-icons"
-import { mainNav, site, whatsappLink } from "@/lib/site"
+import { useContacts } from "@/components/shared/contact-provider"
+import { waLink } from "@/lib/contacts"
+import { mainNav, site } from "@/lib/site"
 import { cn } from "@/lib/utils"
 
 type MobileMenuProps = {
@@ -21,6 +23,7 @@ type MobileMenuProps = {
  * Escape closes it and the page behind is hidden from screen readers.
  */
 export function MobileMenu({ open, onOpenChange, isActive }: MobileMenuProps) {
+  const { phones, email } = useContacts()
   return (
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
       <Dialog.Portal>
@@ -65,19 +68,24 @@ export function MobileMenu({ open, onOpenChange, isActive }: MobileMenuProps) {
             </ul>
             <div className="gold-hairline my-10" />
             <div className="space-y-4 text-sm text-taupe">
-              <a href={site.contact.phoneHref} className="flex items-center gap-3 hover:text-cream">
-                <PhoneIcon className="size-4 text-gold" strokeWidth={1.5} /> {site.contact.phone}
-              </a>
-              <a href={`mailto:${site.contact.email}`} className="flex items-center gap-3 break-all hover:text-cream">
-                <MailIcon className="size-4 shrink-0 text-gold" strokeWidth={1.5} /> {site.contact.email}
-              </a>
-              <a
-                href={whatsappLink()}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-3 hover:text-cream"
-              >
-                <WhatsAppIcon className="size-4 text-gold" /> Chat on WhatsApp
+              {phones.map((phone) => (
+                <div key={phone.tel} className="flex items-center gap-4">
+                  <a href={`tel:${phone.tel}`} className="flex items-center gap-3 tabular-nums hover:text-cream">
+                    <PhoneIcon className="size-4 text-gold" strokeWidth={1.5} /> {phone.display}
+                  </a>
+                  <a
+                    href={waLink(phone)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`WhatsApp ${phone.display}`}
+                    className="grid size-8 place-items-center rounded-full border border-gold/30 text-gold hover:bg-gold hover:text-ink"
+                  >
+                    <WhatsAppIcon className="size-3.5" />
+                  </a>
+                </div>
+              ))}
+              <a href={`mailto:${email}`} className="flex items-center gap-3 break-all hover:text-cream">
+                <MailIcon className="size-4 shrink-0 text-gold" strokeWidth={1.5} /> {email}
               </a>
             </div>
           </nav>

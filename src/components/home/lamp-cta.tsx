@@ -5,8 +5,8 @@ import { m } from "motion/react"
 import { PhoneIcon } from "lucide-react"
 
 import { WhatsAppIcon } from "@/components/shared/brand-icons"
+import { ContactMenu } from "@/components/shared/contact-menu"
 import { Button } from "@/components/ui/button"
-import { whatsappLink } from "@/lib/site"
 
 const ease = [0.22, 1, 0.36, 1] as const
 
@@ -15,7 +15,7 @@ const ease = [0.22, 1, 0.36, 1] as const
  * section scrolls in, over a glowing lamp line. Gradients plus scaleX/opacity
  * only, no animated widths or blur filters.
  */
-export function LampCta({ phone, phoneHref }: { phone: string; phoneHref: string }) {
+export function LampCta() {
   return (
     <section aria-labelledby="cta-title" className="relative isolate overflow-hidden pt-40 pb-28 sm:pt-48">
       <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 -z-10 flex h-[28rem] justify-center">
@@ -62,16 +62,16 @@ export function LampCta({ phone, phoneHref }: { phone: string; phoneHref: string
           Tell us what you&apos;re looking for. An advisor will reply within the hour, every day of the week.
         </p>
         <div className="mt-10 flex flex-col justify-center gap-3 sm:flex-row">
-          <Button size="lg" asChild>
-            <a href={whatsappLink()} target="_blank" rel="noopener noreferrer">
+          <ContactMenu mode="whatsapp" side="top">
+            <Button size="lg">
               <WhatsAppIcon className="size-4" /> WhatsApp us
-            </a>
-          </Button>
-          <Button size="lg" variant="gold" asChild>
-            <a href={phoneHref}>
-              <PhoneIcon aria-hidden="true" /> {phone}
-            </a>
-          </Button>
+            </Button>
+          </ContactMenu>
+          <ContactMenu mode="call" side="top">
+            <Button size="lg" variant="gold">
+              <PhoneIcon aria-hidden="true" /> Call us
+            </Button>
+          </ContactMenu>
           <Button size="lg" variant="ghost" asChild className="text-cream/80 hover:text-cream">
             <Link href="/contact">Send an enquiry</Link>
           </Button>

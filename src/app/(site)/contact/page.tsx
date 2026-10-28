@@ -5,22 +5,36 @@ import { WhatsAppIcon } from "@/components/shared/brand-icons"
 import { EnquiryForm } from "@/components/shared/enquiry-form"
 import { PageHero } from "@/components/shared/page-hero"
 import { getSiteSettings } from "@/lib/data/settings"
-import { site, whatsappLink } from "@/lib/site"
+import { phonesFrom, waLink } from "@/lib/contacts"
+import { site } from "@/lib/site"
 
 export const metadata: Metadata = {
   title: "Contact Us: Call, WhatsApp or Send an Enquiry",
-  description: `Talk to ${site.name} about buying, selling or renting property in Noida, Vasundhara, Indirapuram and Ghaziabad. Call or WhatsApp +91 70111 91639.`,
+  description: `Talk to ${site.name} about buying, selling or renting property in Noida, Vasundhara, Indirapuram and Ghaziabad. Call or WhatsApp ${site.contact.phone} or ${site.contact.phone2}.`,
   alternates: { canonical: "/contact" },
 }
 
 export default async function ContactPage() {
   const { contact } = await getSiteSettings()
+  const phones = phonesFrom(contact.phone, contact.phone2)
   const channels = [
-    { Icon: PhoneIcon, label: "Call us", value: contact.phone, href: `tel:${contact.phone.replace(/[^\d+]/g, "")}` },
-    { Icon: WhatsAppIcon, label: "WhatsApp", value: "Chat with an advisor", href: whatsappLink(), external: true },
-    { Icon: MailIcon, label: "Email", value: contact.email, href: `mailto:${contact.email}` },
-    { Icon: MapPinIcon, label: "Office", value: contact.address },
-    { Icon: ClockIcon, label: "Hours", value: contact.hours },
+    ...phones.map((phone, i) => ({
+      Icon: PhoneIcon,
+      label: phones.length > 1 ? `Call · line ${i + 1}` : "Call us",
+      value: phone.display,
+      href: `tel:${phone.tel}`,
+      external: false,
+    })),
+    ...phones.map((phone, i) => ({
+      Icon: WhatsAppIcon,
+      label: phones.length > 1 ? `WhatsApp · line ${i + 1}` : "WhatsApp",
+      value: phone.display,
+      href: waLink(phone),
+      external: true,
+    })),
+    { Icon: MailIcon, label: "Email", value: contact.email, href: `mailto:${contact.email}`, external: false },
+    { Icon: MapPinIcon, label: "Office", value: contact.address, href: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(contact.address)}`, external: true },
+    { Icon: ClockIcon, label: "Hours", value: contact.hours, href: undefined, external: false },
   ]
 
   return (

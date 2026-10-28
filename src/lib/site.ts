@@ -14,12 +14,15 @@ export const site = {
   url: resolveSiteUrl(),
   locale: "en_IN",
 
+  /** Year the business was founded (shown as "Since 2006" and used for years of experience). */
+  since: 2006,
+  owner: "Rajeev Gupta",
+
   contact: {
     phone: "+91 70111 91639",
-    phoneHref: "tel:+917011191639",
-    whatsapp: "917011191639",
+    phone2: "+91 99115 50651",
     email: "unitedestates.ncr@gmail.com",
-    address: "Office address coming soon, Ghaziabad, Uttar Pradesh",
+    address: "1267, Sector-3, Vasundhara, Ghaziabad, Uttar Pradesh 201012",
     hours: "Mon – Sun, 10:00 am – 7:00 pm",
   },
 
@@ -70,7 +73,3 @@ function resolveSiteUrl() {
   return "http://localhost:3000"
 }
 
-/** Build a WhatsApp click-to-chat link with a prefilled message. */
-export function whatsappLink(message = "Hi, I'm interested in a property listed on Gupta Properties.") {
-  return `https://wa.me/${site.contact.whatsapp}?text=${encodeURIComponent(message)}`
-}

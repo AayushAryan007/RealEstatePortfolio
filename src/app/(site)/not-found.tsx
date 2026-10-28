@@ -1,13 +1,13 @@
 import Link from "next/link"
 
-import { LogoMark } from "@/components/shared/logo"
+import { LogoEmblem } from "@/components/shared/logo"
 import { Button } from "@/components/ui/button"
 
 export default function NotFound() {
   return (
     <section className="grid min-h-[80dvh] place-items-center px-4 pt-28 text-center">
       <div>
-        <LogoMark className="mx-auto h-16 opacity-80" />
+        <LogoEmblem className="mx-auto h-36" />
         <p className="mt-8 eyebrow">404 · Page not found</p>
         <h1 className="mt-4 text-5xl text-cream sm:text-6xl">This door leads nowhere</h1>
         <p className="mx-auto mt-5 max-w-md text-taupe">

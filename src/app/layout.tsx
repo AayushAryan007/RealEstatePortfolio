@@ -1,5 +1,7 @@
 import type { Metadata, Viewport } from "next"
 import { Cormorant_Garamond, Manrope } from "next/font/google"
+import { Analytics } from "@vercel/analytics/next"
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 import { site } from "@/lib/site"
 import "./globals.css"
@@ -34,6 +36,16 @@ export const metadata: Metadata = {
   },
   twitter: { card: "summary_large_image" },
   formatDetection: { telephone: false },
+  keywords: [
+    "property in Vasundhara",
+    "flats in Indirapuram",
+    "property dealer Ghaziabad",
+    "real estate Noida",
+    "plots in Ghaziabad",
+    "commercial property Indirapuram",
+    "flats for rent Vasundhara",
+  ],
+  verification: { google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || undefined },
 }
 
 export const viewport: Viewport = {
@@ -44,7 +56,12 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en-IN" className={`${cormorant.variable} ${manrope.variable}`}>
-      <body className="min-h-dvh">{children}</body>
+      <body className="min-h-dvh">
+        {children}
+        {/* Cookie-free visitor stats; only active when hosted on Vercel. */}
+        <Analytics />
+        <SpeedInsights />
+      </body>
     </html>
   )
 }

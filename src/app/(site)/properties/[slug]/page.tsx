@@ -23,6 +23,7 @@ import { PropertyMap } from "@/components/property/property-map"
 import { PropertyVideo } from "@/components/property/property-video"
 import { FavoriteButton } from "@/components/property/favorite-button"
 import { WhatsAppIcon } from "@/components/shared/brand-icons"
+import { ContactMenu } from "@/components/shared/contact-menu"
 import { EnquiryForm } from "@/components/shared/enquiry-form"
 import { Ornament } from "@/components/shared/section-heading"
 import { Button } from "@/components/ui/button"
@@ -32,7 +33,7 @@ import { formatArea, formatPrice, propertyTypeLabel, purposeLabel } from "@/lib/
 import { facingLabel, furnishingLabel, possessionLabel } from "@/lib/labels"
 import { mediaUrl } from "@/lib/media"
 import { absoluteUrl, breadcrumbLd, JsonLd } from "@/lib/seo/json-ld"
-import { site, whatsappLink } from "@/lib/site"
+import { site } from "@/lib/site"
 
 export async function generateStaticParams() {
   const slugs = await getAllPropertySlugs()
@@ -173,16 +174,16 @@ async function PropertyDetails({ params }: { params: PageProps<"/properties/[slu
                 <p className="mt-2 font-heading text-4xl font-semibold text-gold">{price}</p>
               </div>
               <div className="grid grid-cols-2 gap-2">
-                <Button asChild>
-                  <a href={whatsappLink(waMessage)} target="_blank" rel="noopener noreferrer">
+                <ContactMenu mode="whatsapp" message={waMessage} align="start">
+                  <Button>
                     <WhatsAppIcon className="size-4" /> WhatsApp
-                  </a>
-                </Button>
-                <Button variant="gold" asChild>
-                  <a href={`tel:${settings.contact.phone.replace(/[^\d+]/g, "")}`}>
+                  </Button>
+                </ContactMenu>
+                <ContactMenu mode="call" align="end">
+                  <Button variant="gold">
                     <PhoneIcon aria-hidden="true" /> Call
-                  </a>
-                </Button>
+                  </Button>
+                </ContactMenu>
               </div>
               <a
                 href={`mailto:${settings.contact.email}?subject=${encodeURIComponent(`Enquiry: ${property.title}`)}&body=${encodeURIComponent(url)}`}
