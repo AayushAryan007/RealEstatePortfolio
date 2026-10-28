@@ -45,7 +45,17 @@ export const metadata: Metadata = {
     "commercial property Indirapuram",
     "flats for rent Vasundhara",
   ],
-  verification: { google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || undefined },
+  verification: { google: googleVerificationCode() },
+}
+
+/**
+ * Search Console code from the env var. Accepts either the bare code or the
+ * whole <meta …> tag pasted from Google, and extracts just the code.
+ */
+function googleVerificationCode() {
+  const raw = process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION?.trim()
+  if (!raw) return undefined
+  return raw.match(/content=["']([^"']+)["']/)?.[1] ?? raw
 }
 
 export const viewport: Viewport = {
