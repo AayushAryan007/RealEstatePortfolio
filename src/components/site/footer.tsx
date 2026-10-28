@@ -1,6 +1,6 @@
 import Link from "next/link"
 import { cacheLife } from "next/cache"
-import { ClockIcon, MailIcon, MapPinIcon, PhoneIcon } from "lucide-react"
+import { ClockIcon, KeyRoundIcon, MailIcon, MapPinIcon, PhoneIcon } from "lucide-react"
 
 import { LogoEmblem } from "@/components/shared/logo"
 import {
@@ -100,9 +100,22 @@ export async function Footer() {
       <div className="border-t border-gold/10">
         <div className="container-luxe flex flex-col gap-3 py-6 text-xs text-taupe sm:flex-row sm:items-center sm:justify-between">
           <p>© <CopyrightYear /> {site.name}. All rights reserved.</p>
-          <Link href="/privacy" className="hover:text-cream">
-            Privacy Policy
-          </Link>
+          <div className="flex items-center gap-5">
+            <Link href="/privacy" className="hover:text-cream">
+              Privacy Policy
+            </Link>
+            {/* Discreet way in for the team; hidden from search engines. */}
+            <Link
+              href="/admin/login"
+              rel="nofollow"
+              prefetch={false}
+              aria-label="Admin sign in"
+              title="Admin sign in"
+              className="grid size-7 place-items-center rounded-full border border-gold/15 text-taupe/60 transition-colors duration-300 hover:border-gold/60 hover:text-gold"
+            >
+              <KeyRoundIcon className="size-3.5" strokeWidth={1.5} aria-hidden="true" />
+            </Link>
+          </div>
         </div>
       </div>
     </footer>
