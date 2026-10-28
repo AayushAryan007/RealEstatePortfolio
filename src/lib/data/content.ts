@@ -32,3 +32,13 @@ export async function getTestimonials(): Promise<TestimonialRow[]> {
     .order("sort_order", { ascending: true })
   return data ?? []
 }
+
+export async function getLocalityBySlug(slug: string): Promise<LocalityRow | null> {
+  "use cache"
+  cacheLife("hours")
+  cacheTag(tags.localities)
+
+  if (!hasSupabaseEnv()) return null
+  const { data } = await createPublicClient().from("localities").select("*").eq("slug", slug).maybeSingle()
+  return data
+}
