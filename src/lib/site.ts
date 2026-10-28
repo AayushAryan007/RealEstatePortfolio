@@ -21,7 +21,7 @@ export const site = {
   contact: {
     phone: "+91 70111 91639",
     phone2: "+91 99115 50651",
-    email: "unitedestates.ncr@gmail.com",
+    email: "guptapropertynct@gmail.com",
     address: "1267, Sector-3, Vasundhara, Ghaziabad, Uttar Pradesh 201012",
     hours: "Mon – Sun, 10:00 am – 7:00 pm",
   },

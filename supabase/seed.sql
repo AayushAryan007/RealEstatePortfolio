@@ -48,7 +48,7 @@ insert into public.site_settings (key, value) values
   ('contact', jsonb_build_object(
     'phone', '+91 70111 91639',
     'whatsapp', '917011191639',
-    'email', 'unitedestates.ncr@gmail.com',
+    'email', 'guptapropertynct@gmail.com',
     'address', 'Office address coming soon, Ghaziabad, Uttar Pradesh',
     'hours', 'Mon – Sun, 10:00 am – 7:00 pm'
   )),
