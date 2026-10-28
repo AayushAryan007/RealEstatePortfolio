@@ -1,40 +1,46 @@
-import Link from "next/link"
+import dynamic from "next/dynamic"
 
-import { LogoMark } from "@/components/shared/logo"
-import { Button } from "@/components/ui/button"
-import { site } from "@/lib/site"
+import { About } from "@/components/home/about"
+import { Areas } from "@/components/home/areas"
+import { FeaturedProperties } from "@/components/home/featured-properties"
+import { Hero } from "@/components/home/hero"
+import { LampCta } from "@/components/home/lamp-cta"
+import { PropertyTypes } from "@/components/home/property-types"
+import { Stats } from "@/components/home/stats"
+import { Testimonials } from "@/components/home/testimonials"
+import { getLocalities, getTestimonials } from "@/lib/data/content"
+import { getCategoryCounts, getFeaturedProperties } from "@/lib/data/properties"
+import { getSiteSettings } from "@/lib/data/settings"
+
+// Below-the-fold interactive sections ship as separate chunks.
+const Showcase = dynamic(() => import("@/components/home/showcase").then((m) => m.Showcase))
+const WhyChooseUs = dynamic(() => import("@/components/home/why-choose-us").then((m) => m.WhyChooseUs))
 
 /**
- * Temporary home page for Phase 1: shows the theme, fonts and layout shell.
- * The full homepage sections arrive in Phase 2.
+ * Homepage. All data comes from cached readers, so the whole page is
+ * prerendered and refreshed whenever the admin edits content.
  */
-export default function HomePage() {
+export default async function HomePage() {
+  const [settings, featured, counts, localities, testimonials] = await Promise.all([
+    getSiteSettings(),
+    getFeaturedProperties(6),
+    getCategoryCounts(),
+    getLocalities(),
+    getTestimonials(),
+  ])
+
   return (
-    <section className="relative isolate flex min-h-dvh items-center overflow-hidden">
-      <div
-        aria-hidden="true"
-        className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top,rgb(201_164_92/0.14),transparent_60%)]"
-      />
-      <div className="container-luxe flex flex-col items-center py-32 text-center">
-        <LogoMark className="mb-8 h-16" />
-        <p className="eyebrow">Welcome to {site.name}</p>
-        <h1 className="mt-6 max-w-4xl text-5xl leading-[1.05] text-cream sm:text-6xl lg:text-7xl">
-          Find an address worthy of your trust
-        </h1>
-        <div className="gold-hairline mx-auto mt-8 max-w-48" />
-        <p className="mt-8 max-w-xl text-base leading-relaxed text-taupe sm:text-lg">
-          Handpicked apartments, plots, commercial spaces and rentals across Noida, Vasundhara,
-          Indirapuram and Ghaziabad.
-        </p>
-        <div className="mt-10 flex flex-col gap-3 sm:flex-row">
-          <Button size="lg" asChild>
-            <Link href="/properties">Explore Properties</Link>
-          </Button>
-          <Button size="lg" variant="gold" asChild>
-            <Link href="/contact">Talk to Us</Link>
-          </Button>
-        </div>
-      </div>
-    </section>
+    <>
+      <Hero hero={settings.hero} localities={localities} />
+      <PropertyTypes counts={counts} />
+      <FeaturedProperties properties={featured} />
+      <About about={settings.about} />
+      <Showcase />
+      <WhyChooseUs />
+      <Stats stats={settings.stats} />
+      <Areas localities={localities} />
+      <Testimonials testimonials={testimonials} />
+      <LampCta phone={settings.contact.phone} phoneHref={`tel:${settings.contact.phone.replace(/[^\d+]/g, "")}`} />
+    </>
   )
 }
