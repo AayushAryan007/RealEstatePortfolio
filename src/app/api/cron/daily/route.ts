@@ -12,8 +12,10 @@ import { createServiceClient } from "@/lib/supabase/admin"
  */
 export async function GET(request: NextRequest) {
   await connection() // always run at request time, never cached
-  const secret = process.env.CRON_SECRET
-  if (!secret || request.headers.get("authorization") !== `Bearer ${secret}`) {
+  // Trim so a stray space or newline pasted into the host's settings doesn't break auth.
+  const secret = process.env.CRON_SECRET?.trim()
+  const sent = request.headers.get("authorization")?.replace(/^Bearer\s+/i, "").trim()
+  if (!secret || sent !== secret) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   }
 
