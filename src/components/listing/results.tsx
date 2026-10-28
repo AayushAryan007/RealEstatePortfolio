@@ -55,6 +55,7 @@ export async function Results({ filters, localities, basePath = "/properties", s
           </div>
         </div>
 
+        <h2 className="sr-only">Property listings</h2>
         {items.length ? (
           <ul className={showFilters ? "grid gap-6 sm:grid-cols-2 xl:grid-cols-3" : "grid gap-6 sm:grid-cols-2 lg:grid-cols-3"}>
             {items.map((property, i) => (

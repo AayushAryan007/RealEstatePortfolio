@@ -10,12 +10,14 @@ import {
   YouTubeIcon,
 } from "@/components/shared/brand-icons"
 import { phonesFrom } from "@/lib/contacts"
+import { getLocalities } from "@/lib/data/content"
 import { getSiteSettings } from "@/lib/data/settings"
+import { landingCategories, landingSlugs } from "@/lib/seo/landing"
 import { mainNav, propertyTypeLinks, site } from "@/lib/site"
 
 /** Site footer. A Server Component (no JavaScript shipped); contact details come from Site content. */
 export async function Footer() {
-  const { contact, socials } = await getSiteSettings()
+  const [{ contact, socials }, localities] = await Promise.all([getSiteSettings(), getLocalities()])
   const phones = phonesFrom(contact.phone, contact.phone2)
   // Until real profiles are added, icons stay as placeholders.
   const socialLinks = [
@@ -31,12 +33,12 @@ export async function Footer() {
 
       <div className="container-luxe grid gap-12 py-16 sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1.4fr] lg:py-20">
         <div className="space-y-5">
-          <Link href="/" aria-label="Gupta Properties, home" className="inline-block">
+          <Link href="/" className="inline-block">
             <LogoEmblem className="h-32" />
           </Link>
           <p className="max-w-xs font-heading text-xl text-cream/90 italic">{site.tagline}</p>
           <p className="max-w-xs text-sm leading-relaxed text-taupe">
-            Apartments, plots, commercial spaces and rentals across{" "}
+            Sale, purchase, rent, building design &amp; construction across{" "}
             {site.localities.join(", ")}.
           </p>
           <ul className="flex gap-2 pt-1">
@@ -96,6 +98,29 @@ export async function Footer() {
           </li>
         </FooterColumn>
       </div>
+
+      {localities.length > 0 && (
+        <nav aria-label="Popular property searches" className="border-t border-gold/10">
+          <div className="container-luxe grid gap-6 py-10 sm:grid-cols-2 lg:grid-cols-4">
+            {localities.map((l) => (
+              <div key={l.slug}>
+                <Link href={`/areas/${l.slug}`} className="text-sm font-semibold text-cream/90 hover:text-gold">
+                  Property in {l.name}
+                </Link>
+                <ul className="mt-2 text-xs text-taupe">
+                  {landingSlugs.map((c) => (
+                    <li key={c}>
+                      <Link href={`/areas/${l.slug}/${c}`} className="inline-block py-1.5 hover:text-cream">
+                        {landingCategories[c].label} in {l.name}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </nav>
+      )}
 
       <div className="border-t border-gold/10">
         <div className="container-luxe flex flex-col gap-3 py-6 text-xs text-taupe sm:flex-row sm:items-center sm:justify-between">

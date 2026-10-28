@@ -2,7 +2,6 @@
 
 import Link from "next/link"
 import { Dialog } from "radix-ui"
-import { m } from "motion/react"
 import { MailIcon, PhoneIcon, XIcon } from "lucide-react"
 
 import { LogoMark } from "@/components/shared/logo"
@@ -46,11 +45,10 @@ export function MobileMenu({ open, onOpenChange, isActive }: MobileMenuProps) {
           <nav aria-label="Mobile" className="flex flex-1 flex-col justify-center px-8">
             <ul className="space-y-2">
               {mainNav.map((item, i) => (
-                <m.li
+                <li
                   key={item.href}
-                  initial={{ opacity: 0, y: 16 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.08 + i * 0.06, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                  className="animate-in duration-500 ease-luxe fill-mode-backwards fade-in slide-in-from-bottom-4"
+                  style={{ animationDelay: `${80 + i * 60}ms` }}
                 >
                   <Link
                     href={item.href}
@@ -63,7 +61,7 @@ export function MobileMenu({ open, onOpenChange, isActive }: MobileMenuProps) {
                   >
                     {item.label}
                   </Link>
-                </m.li>
+                </li>
               ))}
             </ul>
             <div className="gold-hairline my-10" />

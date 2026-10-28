@@ -24,7 +24,7 @@ const manrope = Manrope({
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: {
-    default: `${site.name} | Premium Real Estate in Noida & Ghaziabad`,
+    default: `${site.name}: Property Dealer in Vasundhara, Ghaziabad | Since ${site.since}`,
     template: `%s | ${site.name}`,
   },
   description: site.description,

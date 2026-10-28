@@ -4,6 +4,7 @@ import { ArrowRightIcon } from "lucide-react"
 import { LazyVideo } from "@/components/shared/lazy-video"
 import { Button } from "@/components/ui/button"
 import type { HeroSettings } from "@/lib/data/settings"
+import { site } from "@/lib/site"
 import { HeroSearch } from "./hero-search"
 import { Spotlight } from "./spotlight"
 
@@ -38,11 +39,15 @@ export function Hero({ hero, localities }: { hero: HeroSettings; localities: { n
         <Spotlight className="hidden lg:block" />
 
         <div className="container-luxe grid items-center gap-16 lg:grid-cols-[1.15fr_0.85fr]">
-          <div className="max-w-2xl animate-in duration-1000 ease-luxe fade-in slide-in-from-bottom-4 max-lg:text-center max-lg:mx-auto">
-            <p className="eyebrow">{hero.eyebrow}</p>
-            <h1 className="mt-6 text-[2.75rem] leading-[1.02] text-cream sm:text-6xl xl:text-7xl">
-              {hero.title}
+          <div className="max-w-2xl animate-rise-in max-lg:mx-auto max-lg:text-center">
+            {/* The keyword-rich H1 is the gold label; the large line is the brand statement. */}
+            <h1 className="eyebrow leading-relaxed">
+              {site.seoHeading}
+              <span className="sr-only">: {site.name}, since {site.since}</span>
             </h1>
+            <p className="mt-6 font-heading text-[2.75rem] leading-[1.02] font-medium tracking-tight text-balance text-cream sm:text-6xl xl:text-7xl">
+              {hero.title}
+            </p>
             <div className="gold-hairline mt-8 max-w-56 max-lg:mx-auto" />
             <p className="mt-8 text-base leading-relaxed text-cream/75 sm:text-lg">{hero.subtitle}</p>
             <div className="mt-10 flex flex-col gap-3 sm:flex-row max-lg:justify-center">

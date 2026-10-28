@@ -1,30 +1,30 @@
 "use client"
 
-import { m } from "motion/react"
+import { useInViewOnce } from "@/hooks/use-in-view"
+import { cn } from "@/lib/utils"
 
 type RevealProps = {
   children: React.ReactNode
   className?: string
+  /** Seconds to wait before animating (for staggered lists). */
   delay?: number
-  /** Distance in px to rise from. */
-  y?: number
   as?: "div" | "li" | "section"
 }
 
 /**
  * Fades and lifts content into place the first time it scrolls into view.
- * Uses only opacity + transform. Reduced-motion users see it instantly
- * (handled globally by MotionConfig).
+ * CSS transitions on opacity + transform only (see `.reveal` in globals.css);
+ * reduced-motion visitors see the content immediately.
  */
-export function Reveal({ children, className, delay = 0, y = 24, as = "div" }: RevealProps) {
-  const Component = m[as]
+export function Reveal({ children, className, delay = 0, as: Component = "div" }: RevealProps) {
+  const [ref, inView] = useInViewOnce<HTMLElement>()
   return (
     <Component
-      className={className}
-      initial={{ opacity: 0, y }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "0px 0px -12% 0px" }}
-      transition={{ duration: 0.8, delay, ease: [0.22, 1, 0.36, 1] }}
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any -- polymorphic ref
+      ref={ref as any}
+      data-revealed={inView || undefined}
+      style={delay ? { transitionDelay: `${delay}s` } : undefined}
+      className={cn("reveal", className)}
     >
       {children}
     </Component>

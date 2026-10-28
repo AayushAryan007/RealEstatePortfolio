@@ -4,5 +4,5 @@
  * loads and never delays the first paint.
  */
 export default function SiteTemplate({ children }: { children: React.ReactNode }) {
-  return <div className="animate-in duration-500 ease-luxe fade-in">{children}</div>
+  return <div className="animate-page-in">{children}</div>
 }

@@ -3,6 +3,7 @@ import type { MetadataRoute } from "next"
 import { getLocalities } from "@/lib/data/content"
 import { getAllPropertySlugs } from "@/lib/data/properties"
 import { absoluteUrl } from "@/lib/seo/json-ld"
+import { landingSlugs } from "@/lib/seo/landing"
 
 /** Every public page, regenerated as listings change. */
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
@@ -18,7 +19,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   return [
     ...pages,
-    ...localities.map((l) => ({ url: absoluteUrl(`/areas/${l.slug}`), changeFrequency: "weekly" as const, priority: 0.8 })),
+    ...localities.map((l) => ({ url: absoluteUrl(`/areas/${l.slug}`), changeFrequency: "weekly" as const, priority: 0.9 })),
+    ...localities.flatMap((l) =>
+      landingSlugs.map((c) => ({ url: absoluteUrl(`/areas/${l.slug}/${c}`), changeFrequency: "weekly" as const, priority: 0.8 })),
+    ),
     ...properties.map((p) => ({
       url: absoluteUrl(`/properties/${p.slug}`),
       lastModified: p.updated_at,

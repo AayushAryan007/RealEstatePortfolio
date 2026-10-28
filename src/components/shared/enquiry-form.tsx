@@ -7,7 +7,7 @@ import { toast } from "sonner"
 import { submitEnquiry } from "@/actions/enquiry"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
-import { enquirySchema, type EnquiryFieldErrors, type EnquiryState } from "@/lib/validations/enquiry"
+import type { EnquiryFieldErrors, EnquiryState } from "@/lib/validations/enquiry"
 
 type EnquiryFormProps = {
   propertyId?: string
@@ -39,10 +39,9 @@ export function EnquiryForm({ propertyId, propertyTitle, defaultMessage = "", id
 
   const shownErrors = { ...(state.status === "error" ? state.fieldErrors : {}), ...errors }
 
-  /** Validate one field as the visitor leaves it. */
+  /** Validate one field as the visitor leaves it (mirrors the server rules, without shipping zod). */
   const validateField = (field: keyof EnquiryFieldErrors, value: string) => {
-    const result = enquirySchema.shape[field].safeParse(value)
-    setErrors((prev) => ({ ...prev, [field]: result.success ? undefined : result.error.issues[0]?.message }))
+    setErrors((prev) => ({ ...prev, [field]: checkField(field, value) }))
   }
 
   if (state.status === "success") {
@@ -125,6 +124,20 @@ export function EnquiryForm({ propertyId, propertyTitle, defaultMessage = "", id
       <p className="text-center text-xs text-taupe">We reply within the hour. Your details are never shared.</p>
     </form>
   )
+}
+
+function checkField(field: keyof EnquiryFieldErrors, raw: string): string | undefined {
+  const value = raw.trim()
+  if (field === "name") {
+    if (value.length < 2) return "Please enter your name"
+    if (value.length > 80) return "Name is too long"
+  }
+  if (field === "phone") {
+    const digits = value.replace(/[\s-]/g, "")
+    if (!/^(\+?91)?[6-9]\d{9}$|^\+\d{8,15}$/.test(digits)) return "Enter a valid mobile number"
+  }
+  if (field === "message" && value.length > 1000) return "Please keep it under 1000 characters"
+  return undefined
 }
 
 function inputClass(invalid: boolean) {

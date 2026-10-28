@@ -1,7 +1,8 @@
 "use client"
 
-import { useEffect, useRef } from "react"
-import { animate, useInView } from "motion/react"
+import { useEffect } from "react"
+
+import { useInViewOnce } from "@/hooks/use-in-view"
 
 import type { Stat } from "@/lib/data/settings"
 
@@ -9,30 +10,30 @@ const nf = new Intl.NumberFormat("en-IN")
 
 /** One number that counts up once when it scrolls into view. */
 function Counter({ value, suffix }: { value: number; suffix: string }) {
-  const ref = useRef<HTMLSpanElement>(null)
-  const inView = useInView(ref, { once: true, margin: "-10% 0px" })
+  const [ref, inView] = useInViewOnce<HTMLSpanElement>("0px 0px -10% 0px")
 
   // Reset to zero after hydration (it's below the fold) so the count-up starts from 0.
   useEffect(() => {
     if (ref.current && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       ref.current.textContent = `0${suffix}`
     }
-  }, [suffix])
+  }, [suffix, ref])
 
   useEffect(() => {
     const el = ref.current
     if (!inView || !el) return
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return
     // Write straight to the DOM: no React re-render per frame.
-    const controls = animate(0, value, {
-      duration: 2,
-      ease: [0.22, 1, 0.36, 1],
-      onUpdate: (v) => {
-        el.textContent = nf.format(Math.round(v)) + suffix
-      },
+    const duration = 2000
+    const start = performance.now()
+    let frame = requestAnimationFrame(function tick(now) {
+      const t = Math.min(1, (now - start) / duration)
+      const eased = 1 - Math.pow(1 - t, 4) // ease-out
+      el.textContent = nf.format(Math.round(value * eased)) + suffix
+      if (t < 1) frame = requestAnimationFrame(tick)
     })
-    return () => controls.stop()
-  }, [inView, value, suffix])
+    return () => cancelAnimationFrame(frame)
+  }, [inView, value, suffix, ref])
 
   // Server HTML shows the final number, so crawlers and no-JS visitors see real values.
   return (

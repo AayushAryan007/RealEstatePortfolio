@@ -2,7 +2,7 @@
 
 import { useRef } from "react"
 import Image from "next/image"
-import { m, useReducedMotion, useScroll, useTransform } from "motion/react"
+import { LazyMotion, MotionConfig, domAnimation, m, useReducedMotion, useScroll, useTransform } from "motion/react"
 
 import { LazyVideo } from "@/components/shared/lazy-video"
 import { SectionHeading } from "@/components/shared/section-heading"
@@ -30,6 +30,9 @@ export function Showcase() {
           description="Take a walk through the kind of homes we help families find: considered layouts, quality finishes and neighbourhoods that grow with you."
         />
 
+        {/* Motion is only loaded with this (lazily imported) section. */}
+        <LazyMotion features={domAnimation} strict>
+        <MotionConfig reducedMotion="user">
         <div ref={ref} className="mt-14 [perspective:1400px]">
           <m.div
             style={reduceMotion ? undefined : { rotateX, scale, y: lift }}
@@ -63,6 +66,8 @@ export function Showcase() {
             </div>
           </m.div>
         </div>
+        </MotionConfig>
+        </LazyMotion>
       </div>
     </section>
   )

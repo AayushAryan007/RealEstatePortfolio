@@ -123,10 +123,10 @@ export function LogoEmblem({ className, title = `${site.name}, since ${site.sinc
 /** Navbar logo: badge + wordmark, linking home. */
 export function Logo({ className }: { className?: string }) {
   return (
-    <Link href="/" aria-label={`${site.name}, home`} className={cn("group inline-flex items-center gap-3", className)}>
+    <Link href="/" className={cn("group inline-flex items-center gap-3", className)}>
       <LogoMark className="h-11 transition-transform duration-500 ease-luxe group-hover:rotate-[-4deg]" />
       <span className="flex flex-col leading-none">
-        <span className="font-heading text-[1.35rem] font-semibold tracking-[0.24em] text-cream">GUPTA</span>
+        <span className="font-heading text-[1.35rem] font-semibold tracking-[0.24em] text-cream">GUPTA</span>{" "}
         <span className="mt-1 text-[0.55rem] font-semibold tracking-[0.5em] text-gold">PROPERTIES</span>
       </span>
     </Link>

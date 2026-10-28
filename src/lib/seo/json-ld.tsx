@@ -29,7 +29,10 @@ export function breadcrumbLd(items: { name: string; path: string }[]) {
 }
 
 /** The business itself: helps local search (Google Maps / "near me"). */
-export function organizationLd(contact: { phone: string; phone2?: string; email: string; address: string }) {
+export function organizationLd(
+  contact: { phone: string; phone2?: string; email: string; address: string; hours?: string },
+  sameAs: string[] = [],
+) {
   return {
     "@context": "https://schema.org",
     "@type": "RealEstateAgent",
@@ -57,5 +60,14 @@ export function organizationLd(contact: { phone: string; phone2?: string; email:
     },
     areaServed: site.localities.map((name) => ({ "@type": "City", name })),
     priceRange: "₹₹₹",
+    openingHoursSpecification: {
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+      opens: "10:00",
+      closes: "19:00",
+    },
+    hasMap: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(contact.address)}`,
+    knowsAbout: ["Residential property", "Commercial property", "Plots", "Rentals", "Building design and construction"],
+    ...(sameAs.length ? { sameAs } : {}),
   }
 }

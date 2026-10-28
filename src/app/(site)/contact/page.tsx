@@ -41,8 +41,8 @@ export default async function ContactPage() {
     <>
       <PageHero
         eyebrow="Get in touch"
-        title="Let's find your next address"
-        description="Call, WhatsApp or leave your details. An advisor will get back to you within the hour."
+        title="Contact Gupta Properties, Vasundhara"
+        description="Visit us at 1267, Sector-3, Vasundhara, Ghaziabad, or call, WhatsApp or leave your details and an advisor will get back to you."
         crumbs={[{ label: "Contact" }]}
         image="/media/samples/wood-foyer.webp"
       />

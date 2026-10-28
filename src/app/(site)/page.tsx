@@ -1,3 +1,4 @@
+import type { Metadata } from "next"
 import dynamic from "next/dynamic"
 
 import { About } from "@/components/home/about"
@@ -11,7 +12,8 @@ import { Testimonials } from "@/components/home/testimonials"
 import { getLocalities, getTestimonials } from "@/lib/data/content"
 import { getCategoryCounts, getFeaturedProperties } from "@/lib/data/properties"
 import { getSiteSettings } from "@/lib/data/settings"
-import { JsonLd, organizationLd } from "@/lib/seo/json-ld"
+
+export const metadata: Metadata = { alternates: { canonical: "/" } }
 
 // Below-the-fold interactive sections ship as separate chunks.
 const Showcase = dynamic(() => import("@/components/home/showcase").then((m) => m.Showcase))
@@ -32,7 +34,6 @@ export default async function HomePage() {
 
   return (
     <>
-      <JsonLd data={organizationLd(settings.contact)} />
       <Hero hero={settings.hero} localities={localities} />
       <PropertyTypes counts={counts} />
       <FeaturedProperties properties={featured} />

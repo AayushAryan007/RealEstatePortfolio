@@ -3,6 +3,7 @@ import { Suspense } from "react"
 import { notFound } from "next/navigation"
 
 import { Results, ResultsSkeleton } from "@/components/listing/results"
+import { AreaSeo } from "@/components/shared/area-seo"
 import { PageHero } from "@/components/shared/page-hero"
 import { getLocalities, getLocalityBySlug } from "@/lib/data/content"
 import { parseFilters } from "@/lib/filters"
@@ -19,8 +20,8 @@ export async function generateMetadata({ params }: PageProps<"/areas/[slug]">): 
   const locality = await getLocalityBySlug(slug)
   if (!locality) return { title: "Area not found", robots: { index: false } }
   return {
-    title: `Properties in ${locality.name}: Flats, Plots & Rentals`,
-    description: `Buy or rent apartments, plots and commercial property in ${locality.name}. ${locality.intro ?? ""}`.trim(),
+    title: `Property Dealer in ${locality.name}: Flats, Plots & Rentals`,
+    description: `Trusted property dealer in ${locality.name} since 2006. Flats for sale and rent, plots and commercial property in ${locality.name}. Call 7011191639 / 9911550651.`,
     alternates: { canonical: `/areas/${slug}` },
   }
 }
@@ -52,7 +53,7 @@ async function AreaContent({ params, searchParams }: PageProps<"/areas/[slug]">)
       />
       <PageHero
         eyebrow="Area guide"
-        title={`Properties in ${locality.name}`}
+        title={`Property in ${locality.name}`}
         description={locality.intro}
         crumbs={[{ label: "Properties", href: "/properties" }, { label: locality.name }]}
         image={mediaUrl(locality.image_path) ?? undefined}
@@ -62,6 +63,7 @@ async function AreaContent({ params, searchParams }: PageProps<"/areas/[slug]">)
           <Results filters={filters} localities={[]} basePath={`/areas/${slug}`} showFilters={false} />
         </Suspense>
       </section>
+      <AreaSeo area={locality.name} slug={slug} />
     </>
   )
 }

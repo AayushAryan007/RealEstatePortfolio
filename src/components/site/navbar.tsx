@@ -1,9 +1,8 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { m, useMotionValueEvent, useScroll } from "motion/react"
 import { MenuIcon, PhoneIcon } from "lucide-react"
 
 import { ContactMenu } from "@/components/shared/contact-menu"
@@ -20,27 +19,42 @@ import { MobileMenu } from "./mobile-menu"
  */
 export function Navbar() {
   const pathname = usePathname()
-  const { scrollY } = useScroll()
   const [scrolled, setScrolled] = useState(false)
   const [hidden, setHidden] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
 
-  useMotionValueEvent(scrollY, "change", (y) => {
-    const previous = scrollY.getPrevious() ?? 0
-    setScrolled(y > 40)
-    // Hide after the first screen when scrolling down; ignore tiny jitters.
-    if (y > 320 && y - previous > 6) setHidden(true)
-    else if (previous - y > 6 || y < 320) setHidden(false)
-  })
+  // One passive scroll listener, throttled to animation frames.
+  useEffect(() => {
+    let previous = window.scrollY
+    let frame = 0
+    const update = () => {
+      frame = 0
+      const y = window.scrollY
+      setScrolled(y > 40)
+      // Hide after the first screen when scrolling down; ignore tiny jitters.
+      if (y > 320 && y - previous > 6) setHidden(true)
+      else if (previous - y > 6 || y < 320) setHidden(false)
+      previous = y
+    }
+    const onScroll = () => {
+      if (!frame) frame = requestAnimationFrame(update)
+    }
+    update()
+    window.addEventListener("scroll", onScroll, { passive: true })
+    return () => {
+      window.removeEventListener("scroll", onScroll)
+      cancelAnimationFrame(frame)
+    }
+  }, [])
 
   const isActive = (href: string) => (href === "/" ? pathname === "/" : pathname.startsWith(href))
 
   return (
-    <m.header
-      initial={false}
-      animate={{ y: hidden && !menuOpen ? "-110%" : "0%" }}
-      transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-      className="fixed inset-x-0 top-0 z-40 px-3 pt-3 sm:px-5"
+    <header
+      className={cn(
+        "fixed inset-x-0 top-0 z-40 px-3 pt-3 transition-transform duration-500 ease-luxe sm:px-5",
+        hidden && !menuOpen && "-translate-y-[110%]",
+      )}
     >
       <div
         className={cn(
@@ -95,6 +109,6 @@ export function Navbar() {
       </div>
 
       <MobileMenu open={menuOpen} onOpenChange={setMenuOpen} isActive={isActive} />
-    </m.header>
+    </header>
   )
 }

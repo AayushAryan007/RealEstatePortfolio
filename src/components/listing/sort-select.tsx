@@ -12,6 +12,7 @@ export function SortSelect({ filters }: { filters: PropertyFilters }) {
       <span className="hidden sm:inline">Sort by</span>
       <span className="relative">
         <select
+          aria-label="Sort properties"
           value={filters.sort}
           onChange={(event) =>
             router.push(`/properties${filtersToQuery({ ...filters, sort: event.target.value as SortOption, page: 1 })}`, {

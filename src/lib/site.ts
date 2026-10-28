@@ -10,7 +10,9 @@ export const site = {
   shortName: "Gupta",
   tagline: "Built on Trust. Bound by Loyalty.",
   description:
-    "Premium apartments, plots, commercial spaces and rentals across Noida, Vasundhara, Indirapuram and Ghaziabad. Built on trust, bound by loyalty.",
+    "Gupta Properties: trusted property dealer in Vasundhara, Ghaziabad since 2006. Flats, plots, commercial property and rentals in Vasundhara, Indirapuram, Noida and Ghaziabad. Sale, purchase, rent, building design & construction.",
+  /** Visible main heading on the homepage, written for local search. */
+  seoHeading: "Property Dealer in Vasundhara, Indirapuram, Noida & Ghaziabad",
   url: resolveSiteUrl(),
   locale: "en_IN",
 

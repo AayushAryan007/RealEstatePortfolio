@@ -34,15 +34,31 @@ export function LazyVideo({ sources, poster, className, label }: LazyVideoProps)
     // Poster only: simply never start observing, so the video never loads.
     if (reduceMotion || saveData) return
 
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        setInView(entry.isIntersecting)
-        if (entry.isIntersecting) setLoad(true)
-      },
-      { rootMargin: "200px 0px" },
-    )
-    observer.observe(video)
-    return () => observer.disconnect()
+    let observer: IntersectionObserver | undefined
+    let idle = 0
+    // Wait until the page has loaded and the browser is idle, so the video
+    // never competes with the text and images that make up the first view.
+    const start = () => {
+      const ric = window.requestIdleCallback ?? ((cb: () => void) => window.setTimeout(cb, 300))
+      idle = ric(() => {
+        observer = new IntersectionObserver(
+          ([entry]) => {
+            setInView(entry.isIntersecting)
+            if (entry.isIntersecting) setLoad(true)
+          },
+          { rootMargin: "200px 0px" },
+        )
+        observer.observe(video)
+      })
+    }
+    if (document.readyState === "complete") start()
+    else window.addEventListener("load", start, { once: true })
+
+    return () => {
+      window.removeEventListener("load", start)
+      window.cancelIdleCallback?.(idle)
+      observer?.disconnect()
+    }
   }, [])
 
   // Sources are attached after mount, so the element must be told to load them.
